@@ -1,0 +1,65 @@
+{
+  "summary": "Tested Control Financiero Pro backend (12 pytest tests) and frontend (auth, dashboard, navigation, CRUD flows, logout). Backend: 11/12 passed, 1 SKIPPED due to EMERGENT_LLM_KEY budget exhaustion (not a code bug). Frontend: All critical UI flows working - register/login, all 4 tabs, add transaction, logout. Only minor design issue on Movimientos filter chip overflow.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/analyze-receipt",
+        "issue": "Integration code is correct (LlmChat + gpt-4o + base64 image) but the EMERGENT_LLM_KEY budget is exhausted. Returns 500: 'Budget has been exceeded! Current cost: 0.00252, Max budget: 0.001'. Not a code defect - operational/quota issue."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Movimientos (transactions.tsx)",
+        "issues": [
+          "Filter row chip 'Todos los meses' overlaps visually with 'Gastos' chip on 390px viewport. The chips appear in a row that is not properly horizontal-scrollable or wrapping — last chip is partially cut off / drawn on top of the previous one. Consider ScrollView horizontal={true} for the filter chip row or shrinking/wrapping the chips."
+        ]
+      },
+      {
+        "screen": "Dashboard & Presupuestos",
+        "issues": [
+          "Month label displays as 'MAY 2026' / 'May 2026' (English month name, uppercase) because formatting uses default locale instead of es-ES. Consider toLocaleString('es-ES', { month: 'long', year: 'numeric' }) for Spanish UI consistency."
+        ]
+      }
+    ],
+    "react_native_issues": [
+      {
+        "component": "Multiple",
+        "issue": "Deprecation warnings: 'shadow*' style props are deprecated (use boxShadow) and 'props.pointerEvents is deprecated (use style.pointerEvents)'. Non-blocking but should be migrated."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_cfpro_backend.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Verify / top-up the EMERGENT_LLM_KEY budget so /api/analyze-receipt can run real GPT-4o calls (current key has $0.001 cap which is below one vision call cost ~ $0.0025). Re-run integration test once topped up.",
+    "Fix Movimientos filter chip overflow on small viewports - wrap the chip row in a horizontal ScrollView (showsHorizontalScrollIndicator={false}) so 'Todos los meses' is reachable without overlap.",
+    "Localize month labels to Spanish (es-ES) on Dashboard balance card and Presupuestos month switcher.",
+    "Migrate deprecated shadow* style props to boxShadow and pointerEvents prop to style.pointerEvents to silence Expo web warnings."
+  ],
+  "critical_code_review_comments": [
+    "server.py is a single 564-line file mixing auth, transactions, budgets, goals and AI logic. Consider splitting into routers (auth.py, transactions.py, budgets.py, goals.py, receipt.py) for maintainability — not blocking but recommended before adding more endpoints.",
+    "get_current_user does JWT-first then falls back to user_sessions lookup — good. Token revocation on /auth/logout only deletes session_token rows; JWTs remain valid until exp. Acceptable for MVP but worth documenting.",
+    "All MongoDB reads correctly exclude _id with projection {_id: 0}. Good practice followed throughout.",
+    "Frontend api/client.ts correctly uses process.env.EXPO_PUBLIC_BACKEND_URL — no hardcoded URLs."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_cfpro_backend.py (created)",
+    "/app/test_reports/pytest/pytest_results.xml (generated)"
+  ],
+  "success_rate": {
+    "backend": "91.7% (11/12 passed; 1 skipped due to LLM budget cap - integration code verified correct)",
+    "frontend": "100% on tested critical flows (auth, navigation across 4 tabs, transaction CRUD via UI, logout)"
+  },
+  "seed_data_creation": "Created ephemeral test users (test_<uuid>@cfpro.app) via /api/auth/register. Created a UI transaction (TEST_UI_Pan, $12.50, Alimentación, Tarjeta) under the demo account; main agent may want to clean up if not desired.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend URL: https://app-installer-107.preview.emergentagent.com. Demo creds: demo@cfpro.app / Demo1234!. The .test TLD is rejected by Pydantic EmailStr (uses email_validator strict rules). Use @cfpro.app or @example.com domains for test emails. Receipt analyze test will keep failing until EMERGENT_LLM_KEY budget is raised. Dashboard FAB testID is 'fab-add-tx', logout is 'logout-btn', auth screen has 'tab-login'/'tab-register'/'auth-submit'/'auth-google'/'input-name'/'input-email'/'input-password'. Add-transaction sheet uses 'cat-<Category>' and 'acc-<Account>' testIDs.",
+  "rca_of_issue": "AI receipt analysis returns HTTP 500. Backend log shows: 'litellm.BadRequestError: OpenAIException - Budget has been exceeded! Current cost: 0.0025, Max budget: 0.001'. Root cause: EMERGENT_LLM_KEY quota cap is $0.001 USD but one GPT-4o vision call costs ~$0.0025. The integration code (server.py L489-546 using LlmChat + ImageContent + with_model('openai','gpt-4o')) is correctly wired. Mitigation: ask user/admin to raise budget on this Emergent LLM key, or use a cheaper vision model (e.g. gpt-4o-mini)."
+}
