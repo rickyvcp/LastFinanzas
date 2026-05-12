@@ -508,7 +508,7 @@ async def analyze_receipt(payload: AnalyzeReceiptIn, current_user: User = Depend
         api_key=EMERGENT_LLM_KEY,
         session_id=f"receipt_{current_user.user_id}_{uuid.uuid4().hex[:8]}",
         system_message=system,
-    ).with_model("openai", "gpt-4o")
+    ).with_model("openai", "gpt-4o-mini")
 
     msg = UserMessage(
         text="Analiza este recibo y extrae los datos en JSON.",
@@ -519,6 +519,9 @@ async def analyze_receipt(payload: AnalyzeReceiptIn, current_user: User = Depend
         response = await chat.send_message(msg)
     except Exception as e:
         logger.exception("AI analysis failed")
+        msg_str = str(e)
+        if "Budget" in msg_str or "budget" in msg_str:
+            raise HTTPException(status_code=402, detail="Saldo insuficiente en Emergent LLM Key. Recarga desde Perfil → Universal Key.")
         raise HTTPException(status_code=500, detail=f"Error de análisis IA: {e}")
 
     # Try to find JSON in response

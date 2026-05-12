@@ -37,6 +37,12 @@ export function currentMonth(): string {
 
 export function monthLabel(ym: string): string {
   const [y, m] = ym.split('-').map(Number);
+  const names = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  return `${names[m - 1]} ${y}`;
+}
+
+export function monthShort(ym: string): string {
+  const [y, m] = ym.split('-').map(Number);
   const names = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
   return `${names[m - 1]} ${y}`;
 }

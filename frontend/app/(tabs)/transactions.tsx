@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   h1: { fontFamily: 'Outfit_800ExtraBold', fontSize: 28, color: colors.textPrimary, letterSpacing: -0.5 },
   searchWrap: { flexDirection: 'row', alignItems: 'center', gap: 8, marginHorizontal: spacing.lg, marginTop: spacing.md, paddingHorizontal: 12, backgroundColor: colors.bgSecondary, borderRadius: radii.md, borderWidth: 1, borderColor: colors.borderSubtle },
   searchInput: { flex: 1, paddingVertical: 12, fontFamily: 'Manrope_500Medium', color: colors.textPrimary, fontSize: 14 },
-  chipsRow: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md, gap: 8 },
+  chipsRow: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md },
   chip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: radii.full, backgroundColor: colors.bgSecondary, borderWidth: 1.5, borderColor: colors.borderSubtle, marginRight: 8 },
   chipText: { fontFamily: 'Manrope_600SemiBold', fontSize: 12, color: colors.textPrimary },
   row: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.bgSecondary, padding: spacing.md, borderRadius: radii.lg, borderWidth: 1, borderColor: colors.borderSubtle },
