@@ -1,0 +1,138 @@
+{
+  "theme": "LIGHT",
+  "archetype": "1_ORGANIC_EARTHY",
+  "core_philosophy": "A modern, tactile, and calming mobile finance app. Avoids the 'fintech bro' dark mode and tech-mint colors. Uses grounded, warm earthy tones to evoke stability, trust, and mental peace regarding finances.",
+  "language": "es-ES",
+  "typography": {
+    "primary_font": "Manrope",
+    "secondary_font": "Outfit",
+    "scale": {
+      "h1": "text-4xl tracking-tight font-black",
+      "h2": "text-3xl tracking-tight font-bold",
+      "h3": "text-2xl tracking-tight font-bold",
+      "body_large": "text-lg leading-relaxed font-medium",
+      "body": "text-base leading-relaxed font-normal",
+      "caption": "text-sm uppercase tracking-widest font-semibold"
+    },
+    "rules": [
+      "No generic system fonts like Roboto or Inter for headings.",
+      "Overlines/Categories must use wide letter spacing (tracking-widest).",
+      "Numbers and amounts must use tabular lining if supported, or a clean geometric sans."
+    ]
+  },
+  "colors": {
+    "background": {
+      "primary": "#F4F1EB",
+      "secondary": "#FFFFFF",
+      "tertiary": "#EAE0D5"
+    },
+    "text": {
+      "primary": "#1A1B18",
+      "secondary": "#6B705C",
+      "inverse": "#FFFFFF"
+    },
+    "brand": {
+      "primary": "#386641",
+      "primary_light": "#A7C957",
+      "accent": "#F2E8CF"
+    },
+    "semantic": {
+      "income": "#386641",
+      "expense": "#BC4749",
+      "warning": "#E07A5F",
+      "success": "#386641"
+    },
+    "borders": {
+      "subtle": "#E5E2D9",
+      "active": "#386641"
+    }
+  },
+  "spacing_and_layout": {
+    "screen_padding": "px-6 py-8",
+    "card_padding": "p-5",
+    "gap_small": "gap-2",
+    "gap_medium": "gap-4",
+    "gap_large": "gap-8",
+    "border_radius": {
+      "small": "rounded-md",
+      "medium": "rounded-xl",
+      "large": "rounded-2xl",
+      "full": "rounded-full"
+    },
+    "rules": [
+      "Use 'Bento' grid style adaptations for mobile: cards should stretch to fill rows.",
+      "Avoid 100% full-width elements touching the screen edges except bottom tabs.",
+      "Cards must have flat solid backgrounds (#FFFFFF) with a 1px subtle border (#E5E2D9) and an extremely soft shadow (or no shadow)."
+    ]
+  },
+  "components": {
+    "bottom_tabs": {
+      "background": "#FFFFFF",
+      "active_tint": "#386641",
+      "inactive_tint": "#6B705C",
+      "border_top": "1px solid #E5E2D9",
+      "elevation": "none"
+    },
+    "fab": {
+      "background": "#386641",
+      "icon_color": "#FFFFFF",
+      "position": "absolute, bottom 24px above tabs, centered or right-aligned",
+      "shadow": "0px 4px 12px rgba(56, 102, 65, 0.3)"
+    },
+    "cards": {
+      "style": "bg-white rounded-2xl border border-[#E5E2D9] p-5",
+      "hero_card": "bg-[#386641] rounded-3xl p-6"
+    },
+    "charts": {
+      "library": "victory-native or react-native-gifted-charts",
+      "style": "Use smooth curves for line charts, rounded tops for bar charts. Colors must map to the semantic palette (Income: #386641, Expense: #BC4749)."
+    },
+    "bottom_sheet": {
+      "handle": "w-12 h-1 bg-[#EAE0D5] rounded-full mx-auto mt-2",
+      "background": "#F4F1EB",
+      "corners": "rounded-t-3xl"
+    }
+  },
+  "interactions_and_motion": {
+    "button_press": "Scale down slightly (0.95) on press.",
+    "list_items": "Staggered fade-in entrance for transaction lists.",
+    "page_transition": "Slide in from right, fade out."
+  },
+  "accessibility_and_testing": {
+    "contrast": "Ensure all text meets at least 4.5:1 contrast ratio.",
+    "test_ids": "CRITICAL: All interactable elements (buttons, inputs, list items, tabs) MUST include a data-testid attribute formatted as kebab-case based on role (e.g., data-testid='login-submit-button', data-testid='transaction-item')."
+  },
+  "media_and_assets": {
+    "icons": {
+      "library": "@expo/vector-icons (Ionicons or MaterialCommunityIcons)",
+      "categories": {
+        "Alimentación": "food-apple",
+        "Transporte": "car",
+        "Vivienda": "home",
+        "Servicios": "water",
+        "Salud": "medical-bag",
+        "Entretenimiento": "game-controller",
+        "Ropa": "hanger",
+        "Educación": "school",
+        "Otros": "ellipsis-horizontal"
+      }
+    },
+    "images": {
+      "profile_placeholder": {
+        "url": "https://images.unsplash.com/photo-1723537742563-15c3d351dbf2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDZ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBjYXN1YWwlMjBoZWFkc2hvdCUyMHBvcnRyYWl0fGVufDB8fHx8MTc3ODU1ODcwNnww&ixlib=rb-4.1.0&q=85",
+        "description": "Professional casual headshot to be used as default user avatar in Profile screen."
+      }
+    }
+  },
+  "instructions_to_main_agent": [
+    "Build an Expo React Native app named 'Control Financiero Pro'.",
+    "All text in the UI must be strictly in Spanish.",
+    "Implement a clean bottom tab navigation with 4 routes: Dashboard, Movimientos, Presupuestos, Metas.",
+    "Implement a Floating Action Button (FAB) that dynamically opens a Bottom Sheet to add entries (Transaction/Budget/Goal).",
+    "Include a placeholder function/UI for 'AI Receipt Scanner' in the transaction bottom sheet using Expo Camera/ImagePicker.",
+    "Apply the exact colors from this JSON. DO NOT use standard Tailwind blue/slate/gray.",
+    "Ensure the hero card on the Dashboard uses the 'hero_card' styling (Forest Green background, white text) for visual contrast against the off-white app background.",
+    "DO NOT forget to attach data-testid to every TouchableOpacity, Pressable, TextInput, and Button.",
+    "Use standard React Native StyleSheet or NativeWind if configured, but map exactly to these visual properties."
+  ]
+}
